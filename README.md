@@ -2,6 +2,8 @@
 
 一个基于 React + TypeScript + Vite 的微电网选型配置系统，帮助用户根据需求配置最适合的微电网解决方案。
 
+🌐 **在线访问**: https://panskai.github.io/MicroGrid/
+
 ## 功能特性
 
 ### 🎯 核心功能
