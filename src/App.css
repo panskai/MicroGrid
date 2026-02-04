@@ -1,0 +1,132 @@
+.app {
+  min-height: 100vh;
+  background: #ffffff;
+  padding: 0;
+}
+
+/* Top Header Bar */
+.app-top-header {
+  background: #1a365d;
+  padding: 1.25rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.top-header-content {
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 0 1rem;
+}
+
+.top-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.top-header-logo {
+  display: flex;
+  align-items: center;
+}
+
+.top-header-logo-img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+}
+
+.top-header-slogan {
+  color: white;
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.top-header-right {
+  display: flex;
+  align-items: center;
+}
+
+.top-header-company {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: flex-end;
+}
+
+.top-header-company-name {
+  color: white;
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.top-header-company-subtitle {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+/* Step Indicator Container */
+.step-indicator-container {
+  background: #ffffff;
+  padding: 1.5rem 1rem 0;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Main Layout */
+.app-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2rem;
+}
+
+.layout-left {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.layout-right {
+  display: flex;
+  align-items: flex-start;
+}
+
+@media (max-width: 1024px) {
+  .app-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .layout-left {
+    order: 2;
+  }
+  
+  .layout-right {
+    order: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .app {
+    padding: 1rem 0.5rem;
+}
+
+  .app-header h1 {
+    font-size: 2rem;
+}
+
+  .app-subtitle {
+    font-size: 1rem;
+  }
+  
+  .app-layout {
+    gap: 1rem;
+  }
+}

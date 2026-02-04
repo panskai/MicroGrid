@@ -1,0 +1,316 @@
+.microgrid-visualization {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7fafc;
+  padding: 3rem;
+  min-height: 700px;
+  border-radius: 8px;
+}
+
+.visualization-container {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-height: 700px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.visual-title {
+  text-align: center;
+  font-size: 1.75rem;
+  color: #1a365d;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  z-index: 10;
+  width: 100%;
+}
+
+/* 可视化区域信息提示框 */
+.visualization-info-box {
+  position: absolute;
+  top: 60px;
+  left: 20px;
+  max-width: 400px;
+  background: rgba(45, 55, 72, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  z-index: 20;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.info-box-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(74, 85, 104, 0.8);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.info-box-content {
+  flex: 1;
+}
+
+.info-box-content p {
+  color: white;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+
+/* 能源控制中心 */
+.ecc-box {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  height: auto;
+  background: transparent;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #1a365d;
+  text-align: center;
+  z-index: 10;
+  padding: 0.5rem;
+}
+
+.ecc-icon {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 0.5rem;
+  color: #1a365d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ecc-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.ecc-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  color: #1a365d;
+}
+
+.ecc-subtitle {
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+
+/* 分布式能源资源容器 */
+.ders-container {
+  position: absolute;
+  top: 250px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 2rem;
+  min-height: 200px;
+  padding: 0 2rem;
+  z-index: 5;
+}
+
+.ders-container.empty {
+  align-items: center;
+  justify-content: center;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  padding: 0;
+}
+
+.empty-state {
+  color: #999;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.der-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  width: 150px;
+  flex-shrink: 0;
+  position: absolute;
+  z-index: 5;
+  top: 0;
+}
+
+/* 光伏在左侧 */
+.der-item.solar {
+  left: 10%;
+  top: 0;
+}
+
+/* 电池在中间 */
+.der-item.battery {
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+/* 柴发在右侧 */
+.der-item.generator {
+  right: 10%;
+  top: 0;
+}
+
+.der-icon {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 0.5rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.der-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.der-label {
+  font-size: 1rem;
+  color: #1a365d;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+}
+
+.der-detail {
+  font-size: 0.875rem;
+  color: #666;
+  text-align: center;
+  margin-top: 0.25rem;
+}
+
+.der-capacity {
+  font-size: 0.75rem;
+  color: #999;
+  text-align: center;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+
+/* 负载 */
+.load-box {
+  position: absolute;
+  top: 500px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  height: auto;
+  background: transparent;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  z-index: 5;
+  padding: 0.5rem;
+}
+
+.load-icon {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.load-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.load-label {
+  font-size: 1rem;
+  color: #1a365d;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+}
+
+
+@media (max-width: 768px) {
+  .microgrid-visualization {
+    padding: 1rem;
+  }
+  
+  .visualization-container {
+    min-height: 600px;
+  }
+  
+  .ders-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    top: 300px;
+  }
+  
+  .load-box {
+    top: 600px;
+  }
+}
