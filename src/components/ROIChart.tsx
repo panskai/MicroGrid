@@ -63,11 +63,14 @@ export default function ROIChart({ yearData, roiYears }: ROIChartProps) {
             yAxisId="right"
           />
           <Tooltip 
-            formatter={(value: number, name: string) => {
+            formatter={(value: any, name: any) => {
+              if (value === undefined || value === null) return '';
+              const numValue = Number(value);
+              if (isNaN(numValue)) return '';
               if (name === '投资回报率') {
-                return [`${value.toFixed(1)}%`, name];
+                return [`${numValue.toFixed(1)}%`, name];
               }
-              return [`${value.toFixed(2)} 万元`, name];
+              return [`${numValue.toFixed(2)} 万元`, name];
             }}
             labelFormatter={(label) => `第 ${label} 年`}
           />

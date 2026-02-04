@@ -13,7 +13,6 @@ export default function Step2Brackets({ bracketSets, componentModel, bracketCapa
   const [showDetails, setShowDetails] = useState(false);
 
   const handleBracketSetsChange = (sets: number) => {
-    const footprint = sets * 260; // 每套260平方米
     onUpdate({ bracketSets: sets, bracketCapacity: sets * 32 });
   };
 

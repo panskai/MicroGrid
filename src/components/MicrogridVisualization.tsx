@@ -11,7 +11,6 @@ export default function MicrogridVisualization({ config, currentStep, selectedOp
   const hasSolar = config.bracketSets > 0;
   const hasBattery = config.storageDays !== null && config.storageDays > 0;
   const hasGenerator = config.hasGenerator;
-  const hasGrid = true; // 总是有电网连接
 
   // 计算DERs数量
   const derCount = [hasSolar, hasBattery, hasGenerator].filter(Boolean).length;
