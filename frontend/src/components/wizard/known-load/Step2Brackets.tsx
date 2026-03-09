@@ -2,6 +2,7 @@ import { useState } from 'react';
 import OptionButton from '@/components/ui/OptionButton';
 import { useProducts } from '@/context/ProductsContext';
 import { useLang } from '@/context/LangContext';
+import { formatAreaDual } from '@/utils/unitFormat';
 import './Step2Brackets.css';
 
 interface Step2BracketsProps {
@@ -56,8 +57,8 @@ export default function Step2Brackets({
               label={`${sets} ${t('bracket.sets_unit')}`}
               description={
                 lang === 'en'
-                  ? `${sets * selectedBracket.panelsPerSet} panels · ${kw} kW · ${t('bracket.area_unit')}${sets * selectedBracket.areaM2} m²`
-                  : `${sets * selectedBracket.panelsPerSet} ${t('bracket.panels_unit')} · ${kw} kW · ${t('bracket.area_unit')} ${sets * selectedBracket.areaM2} m²`
+                  ? `${sets * selectedBracket.panelsPerSet} panels · ${kw} kW · ${t('bracket.area_unit')}${formatAreaDual(sets * selectedBracket.areaM2, lang).combined}`
+                  : `${sets * selectedBracket.panelsPerSet} ${t('bracket.panels_unit')} · ${kw} kW · ${t('bracket.area_unit')} ${formatAreaDual(sets * selectedBracket.areaM2, lang).combined}`
               }
               selected={bracketSets === sets}
               onClick={() => handleSetsChange(sets)}
@@ -112,7 +113,7 @@ export default function Step2Brackets({
                     >
                       <div className="model-name">{bracket.panelsPerSet} {t('bracket.panels_per_set')}</div>
                       <div className="model-detail">{bracket.displayName}</div>
-                      <div className="model-area">{lang === 'en' ? 'Area' : '占地'} {bracket.areaM2} {t('bracket.area_per_set')}</div>
+                      <div className="model-area">{lang === 'en' ? 'Area' : '占地'} {formatAreaDual(bracket.areaM2, lang).combined} / {lang === 'en' ? 'set' : '套'}</div>
                     </div>
                   ))}
                 </div>
@@ -136,7 +137,7 @@ export default function Step2Brackets({
             </div>
             <div className="summary-row">
               <span>{t('bracket.summary.area')}</span>
-              <strong>{areaM2} m² {t('bracket.area_note')}</strong>
+              <strong>{formatAreaDual(areaM2, lang).combined} {t('bracket.area_note')}</strong>
             </div>
           </div>
         </div>

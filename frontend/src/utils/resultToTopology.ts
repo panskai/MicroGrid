@@ -4,10 +4,11 @@
  */
 import type { CalculateResponse } from '@/types/index';
 import type { TopologyData } from '@/components/pages/MicrogridTopology';
+import { formatAreaDual } from '@/utils/unitFormat';
 
 export function resultToTopologyData(
   apiResult: CalculateResponse | null,
-  config?: { panelModel?: string; loadType?: string; voltageLevel?: string; dieselPriceUsd?: number }
+  config?: { panelModel?: string; loadType?: string; voltageLevel?: string; dieselPriceUsd?: number; lang?: 'zh' | 'en' }
 ): Partial<TopologyData> {
   if (!apiResult?.systemConfig) return {};
 
@@ -28,7 +29,12 @@ export function resultToTopologyData(
       capacity: { name: 'Max PV Capacity', value: pvKw > 0 ? pvKw.toFixed(1) : '—', unit: pvKw > 0 ? 'kW' : '' },
       sets: bracketSets > 0 ? { name: 'Max Bracket Sets', value: bracketSets, unit: 'sets' } : undefined,
       panelModel: (sc.panelModel as string) || config?.panelModel || '655Wp',
-      areaM2: areaM2 || undefined,
+      customItems: [
+        { name: 'Max PV Capacity', value: pvKw > 0 ? pvKw.toFixed(1) : '—', unit: pvKw > 0 ? 'kW' : '' },
+        ...(bracketSets > 0 ? [{ name: 'Max Bracket Sets', value: bracketSets, unit: 'sets' }] : []),
+        { name: 'Panel Model', value: (sc.panelModel as string) || config?.panelModel || '655Wp', unit: '' },
+        ...(areaM2 > 0 ? [{ name: 'Max Area', value: formatAreaDual(areaM2, config?.lang ?? 'en').combined, unit: '' }] : []),
+      ],
     },
     load: {
       title: 'Load',

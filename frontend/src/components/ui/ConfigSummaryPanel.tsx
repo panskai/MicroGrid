@@ -1,8 +1,6 @@
-/**
- * ConfigSummaryPanel.tsx — 配置流程右上角配置摘要（已知负载 / DIY）
- */
 import { useLang } from '@/context/LangContext';
 import type { ConfigData, EMSAddon } from '@/types/index';
+import { formatAreaDual, formatIrradianceDual } from '@/utils/unitFormat';
 import './ConfigSummaryPanel.css';
 
 interface ConfigSummaryPanelProps {
@@ -12,48 +10,45 @@ interface ConfigSummaryPanelProps {
 
 export default function ConfigSummaryPanel({ config, scenario }: ConfigSummaryPanelProps) {
   const { lang } = useLang();
-
   const areaM2 = config.availableAreaM2 ?? 0;
 
   const items: { label: string; value: string; subItems?: { label: string; value: string }[] }[] = [];
 
   if (scenario === 'known-load') {
-    // 安装地区
     items.push({
       label: lang === 'en' ? 'Installation Region' : '安装地区',
       value: config.locationName || '—',
     });
 
-    // 日照评估结果（含子参数：峰值日照、年有效小时、年辐照量）
     const psh = config.peakSunHoursPerDay;
     const eff = config.annualEffHours;
     const irrad = (config as any).annualKwhPerM2;
     const hasSolar = psh != null || eff != null || irrad != null;
+
     items.push({
       label: lang === 'en' ? 'Solar Assessment' : '日照评估结果',
       value: hasSolar ? '' : '—',
-      subItems: hasSolar ? [
-        { label: lang === 'en' ? 'Peak sun hours' : '峰值日照', value: psh != null ? `${psh} h/d` : '—' },
-        { label: lang === 'en' ? 'Annual eff. hours' : '年有效小时', value: eff != null ? `${eff} h/a` : '—' },
-        { label: lang === 'en' ? 'Annual irradiance' : '年辐照量', value: irrad != null ? `${Math.round(irrad).toLocaleString()} kWh/m²` : '—' },
-      ] : undefined,
+      subItems: hasSolar
+        ? [
+            { label: lang === 'en' ? 'Peak sun hours' : '峰值日照', value: psh != null ? `${psh} h/d` : '—' },
+            { label: lang === 'en' ? 'Annual eff. hours' : '年有效小时', value: eff != null ? `${eff} h/a` : '—' },
+            { label: lang === 'en' ? 'Annual irradiance' : '年辐照量', value: formatIrradianceDual(irrad, lang).combined },
+          ]
+        : undefined,
     });
   }
 
   if (scenario === 'diy') {
-    // DIY 右上角显示场地面积
     items.push({
       label: lang === 'en' ? 'Site Area' : '场地面积',
-      value: areaM2 > 0 ? `${areaM2} m²` : '—',
+      value: formatAreaDual(areaM2, lang).combined,
     });
 
-    // DIY 右上角显示逆变器情况（不显示电压等级）
     const inverterKw = (config as any).inverterKw ?? 0;
     const inverterCount = (config as any).inverterCount ?? 0;
     const totalInverterKw = (config as any).totalInverterKw ?? 0;
-    const inverterSummary = inverterKw > 0 && inverterCount > 0
-      ? `${inverterKw} kW × ${inverterCount}`
-      : '—';
+    const inverterSummary = inverterKw > 0 && inverterCount > 0 ? `${inverterKw} kW × ${inverterCount}` : '—';
+
     items.push({
       label: lang === 'en' ? 'Inverter Setup' : '逆变器情况',
       value: inverterSummary,
@@ -73,14 +68,12 @@ export default function ConfigSummaryPanel({ config, scenario }: ConfigSummaryPa
       ],
     });
   } else {
-    // 已知负载保留电压等级
     items.push({
       label: lang === 'en' ? 'Voltage Level' : '电压等级',
       value: config.voltageLevel || '—',
     });
   }
 
-  // EMS控制方式
   const emsBase = config.emsControlMethod === 'edge'
     ? (lang === 'en' ? 'Edge Control' : '边缘控制')
     : config.emsControlMethod || '—';
@@ -92,6 +85,7 @@ export default function ConfigSummaryPanel({ config, scenario }: ConfigSummaryPa
   const emsVal = addons.length > 0
     ? `${emsBase} + ${addons.map(a => addonLabels[a]).join(', ')}`
     : emsBase;
+
   items.push({
     label: lang === 'en' ? 'EMS Control' : 'EMS控制方式',
     value: emsVal,

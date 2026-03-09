@@ -10,6 +10,7 @@ import DownloadReportModal from '@/components/result/DownloadReportModal';
 import SchematicTopology from '@/components/topology/SchematicTopology';
 import { resultToTopologyData } from '@/utils/resultToTopology';
 import { useLang } from '@/context/LangContext';
+import { formatAreaDual, formatFuelPriceDual, formatVolumeDual } from '@/utils/unitFormat';
 import './ResultPage.css';
 
 interface ResultPageProps {
@@ -250,7 +251,9 @@ export default function ResultPage({
         </div>
         <div className="kpi-card">
           <div className="kpi-label">{t('kpi.fuel_saving')}{config.scenario === 'diy' ? ' *' : ''}</div>
-          <div className="kpi-value">{fmtNum(sim?.annualFuelSavingLiters, 0)} {t('unit.liters')}</div>
+          <div className="kpi-value" style={{ fontSize: '1rem', lineHeight: 1.25 }}>
+            {formatVolumeDual(sim?.annualFuelSavingLiters, lang).combined}
+          </div>
         </div>
       </div>
 
@@ -391,7 +394,7 @@ export default function ResultPage({
                 </div>
                 <div className="sum-row">
                   <span className="sum-label">{t('sim.mg_diesel')}</span>
-                  <span className="sum-value">{fmtNum(sim.mgDieselLiters, 0)} {t('unit.liters')}/{lang === 'en' ? 'yr' : '年'}</span>
+                  <span className="sum-value">{formatVolumeDual(sim.mgDieselLiters, lang).combined}/{lang === 'en' ? 'yr' : '年'}</span>
                 </div>
                 <div className="sum-row">
                   <span className="sum-label">{t('sim.mg_diesel_hr')}</span>
@@ -399,7 +402,7 @@ export default function ResultPage({
                 </div>
                 <div className="sum-row">
                   <span className="sum-label">{t('sim.diesel_only')}</span>
-                  <span className="sum-value highlight-red">{fmtNum(sim.dieselOnlyLiters, 0)} {t('unit.liters')}/{lang === 'en' ? 'yr' : '年'}</span>
+                  <span className="sum-value highlight-red">{formatVolumeDual(sim.dieselOnlyLiters, lang).combined}/{lang === 'en' ? 'yr' : '年'}</span>
                 </div>
                 <div className="sum-row">
                   <span className="sum-label">{t('sim.diesel_only_hr')}</span>
@@ -407,7 +410,7 @@ export default function ResultPage({
                 </div>
                 <div className="sum-row">
                   <span className="sum-label">{t('sim.fuel_saving')}</span>
-                  <span className="sum-value highlight-green">{fmtNum(sim.annualFuelSavingLiters, 0)} {t('unit.liters')}</span>
+                  <span className="sum-value highlight-green">{formatVolumeDual(sim.annualFuelSavingLiters, lang).combined}</span>
                 </div>
                 <div className="sum-row">
                   <span className="sum-label">{t('sim.fuel_saving_usd')}</span>
@@ -498,7 +501,7 @@ export default function ResultPage({
                   </div>
                   <div className="sum-row">
                     <span className="sum-label">{t('sys.area')}</span>
-                    <span className="sum-value">{fmtNum(sc.occupiedAreaM2, 0)} m²</span>
+                    <span className="sum-value">{formatAreaDual(sc.occupiedAreaM2, lang).combined}</span>
                   </div>
                   <div className="sum-row">
                     <span className="sum-label">{t('sys.batt_model')}</span>
@@ -573,8 +576,8 @@ export default function ResultPage({
                   }
                   isVital={true}
                   details={lang === 'en'
-                    ? `Total PV ${sc?.pvCapacityKw?.toFixed(1) ?? '—'} kW, footprint ${sc?.occupiedAreaM2?.toFixed(0) ?? '—'} m², module ${sc?.panelModel ?? config.panelModel} (${sc?.panelWatts ?? '—'}Wp).`
-                    : `光伏总容量 ${sc?.pvCapacityKw?.toFixed(1) ?? '—'} kW，占地 ${sc?.occupiedAreaM2?.toFixed(0) ?? '—'} m²，组件型号 ${sc?.panelModel ?? config.panelModel} (${sc?.panelWatts ?? '—'}Wp)。`}
+                    ? `Total PV ${sc?.pvCapacityKw?.toFixed(1) ?? '—'} kW, footprint ${formatAreaDual(sc?.occupiedAreaM2, lang).combined}, module ${sc?.panelModel ?? config.panelModel} (${sc?.panelWatts ?? '—'}Wp).`
+                    : `光伏总容量 ${sc?.pvCapacityKw?.toFixed(1) ?? '—'} kW，占地 ${formatAreaDual(sc?.occupiedAreaM2, lang).combined}，组件型号 ${sc?.panelModel ?? config.panelModel} (${sc?.panelWatts ?? '—'}Wp)。`}
                 />
                 <ComponentCard
                   title={lang === 'en' ? 'Battery Storage (BESS)' : '电池储能 (BESS)'}
@@ -654,6 +657,7 @@ export default function ResultPage({
                 loadType: config.loadType,
                 voltageLevel: config.voltageLevel,
                 dieselPriceUsd: config.dieselPriceUsd,
+                lang,
               })}
             />
           </div>
@@ -675,7 +679,10 @@ export default function ResultPage({
             systemConfig:    apiResult?.systemConfig   as Record<string, unknown> | undefined,
             capex:           apiResult?.capex          as Record<string, unknown> | undefined,
             simulation:      apiResult?.simulation     as Record<string, unknown> | undefined,
-            summary:         apiResult?.summary        as Record<string, unknown> | undefined,
+            summary:         {
+              ...(apiResult?.summary ? (apiResult.summary as Record<string, unknown>) : {}),
+              dieselPriceDisplay: formatFuelPriceDual(config.dieselPriceUsd, lang).combined,
+            },
             comparisonTable: apiResult?.comparisonTable as Record<string, unknown>[] | undefined,
           }}
           onClose={() => setShowDownloadModal(false)}

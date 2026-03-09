@@ -8,6 +8,7 @@ import type { ConfigData } from '@/types/index';
 import { fetchSolarHours } from '@/api/client';
 import { useProducts } from '@/context/ProductsContext';
 import { useLang } from '@/context/LangContext';
+import { formatIrradianceDual } from '@/utils/unitFormat';
 
 interface StepLocationProps {
   locationName?: string;
@@ -331,11 +332,13 @@ export default function StepLocation({
               <div style={{ fontSize: '0.7rem', color: '#718096' }}>{t('loc.annual_hrs_unit')}</div>
             </div>
             <div style={{ background: 'white', borderRadius: '8px', padding: '0.7rem' }}>
-              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#d69e2e' }}>
-                {solarResult.annualKwhPerM2 > 0 ? Math.round(solarResult.annualKwhPerM2).toLocaleString() : '—'}
+              <div style={{ fontSize: '1rem', fontWeight: 800, color: '#d69e2e', lineHeight: 1.25 }}>
+                {formatIrradianceDual(solarResult.annualKwhPerM2, lang).combined}
               </div>
               <div style={{ fontSize: '0.75rem', color: '#ecc94b', fontWeight: 600 }}>{t('loc.irradiance')}</div>
-              <div style={{ fontSize: '0.7rem', color: '#718096' }}>{t('loc.irradiance_unit')}</div>
+              <div style={{ fontSize: '0.7rem', color: '#718096' }}>
+                {lang === 'en' ? 'metric + imperial' : '公制 + 英制'}
+              </div>
             </div>
           </div>
           {solarResult.note && (

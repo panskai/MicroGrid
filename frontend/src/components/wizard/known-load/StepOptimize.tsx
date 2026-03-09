@@ -10,9 +10,27 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import type { ConfigData, OptimizeOption } from '@/types/index';
 import { optimizeMicrogrid } from '@/api/client';
+import { type AreaUnit, formatAreaDual, formatAreaSingle, sqftToSqm, sqmToSqft } from '@/utils/unitFormat';
 
 // ── 常量 ─────────────────────────────────────────────────────
 const AREA_PER_SET_M2 = 260;   // 每套标准支架占地 ≈ 260 m²
+
+function formatAreaInputValue(areaM2?: number | null, unit: AreaUnit = 'm2'): string {
+  if (!areaM2 || areaM2 <= 0) return '';
+  const displayValue = unit === 'm2' ? areaM2 : sqmToSqft(areaM2);
+  const rounded = Math.round(displayValue * 10) / 10;
+  return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+}
+
+function parseAreaInputValue(area: string, unit: AreaUnit): number | null {
+  const numeric = parseFloat(area);
+  if (!Number.isFinite(numeric) || numeric <= 0) return null;
+  return unit === 'm2' ? numeric : sqftToSqm(numeric);
+}
+
+function getInputWidth(value: string, minimumChars = 8): string {
+  return `${Math.max(minimumChars, value.trim().length + 2)}ch`;
+}
 
 // ── 三者协同原理 ──────────────────────────────────────────────
 function DesignLogic() {
@@ -52,18 +70,20 @@ interface ConstraintPanelProps {
   dieselCapacityKw: number;
   dieselIsNew:      boolean;
   // 场地面积约束
-  hasAreaLimit:   boolean;
-  availableArea:  string;
-  onHasAreaLimit: (v: boolean) => void;
-  onAreaInput:    (v: string)  => void;
+  hasAreaLimit:    boolean;
+  availableArea:   string;
+  areaInputUnit:   AreaUnit;
+  onHasAreaLimit:  (v: boolean) => void;
+  onAreaInput:     (v: string)  => void;
+  onAreaUnitInput: (v: AreaUnit) => void;
 }
 
 function ConstraintPanel({
   hasGenerator, dieselCapacityKw, dieselIsNew,
-  hasAreaLimit, availableArea, onHasAreaLimit, onAreaInput,
+  hasAreaLimit, availableArea, areaInputUnit, onHasAreaLimit, onAreaInput, onAreaUnitInput,
 }: ConstraintPanelProps) {
-  const areaNum        = parseFloat(availableArea) || 0;
-  const maxSetsFromArea = areaNum > 0 ? Math.max(1, Math.floor(areaNum / AREA_PER_SET_M2)) : 0;
+  const areaM2 = parseAreaInputValue(availableArea, areaInputUnit) ?? 0;
+  const maxSetsFromArea = areaM2 > 0 ? Math.max(1, Math.floor(areaM2 / AREA_PER_SET_M2)) : 0;
 
   // 柴发状态描述
   let dieselStatusText = '';
@@ -127,27 +147,64 @@ function ConstraintPanel({
 
         {hasAreaLimit && (
           <div style={{ marginLeft: '1.5rem', marginTop: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.6rem', flexWrap: 'wrap' }}>
+            <div
+              style={{
+                display: 'inline-flex',
+                background: '#edf2f7',
+                borderRadius: '999px',
+                padding: '0.15rem',
+                gap: '0.15rem',
+              }}
+            >
+              {(['m2', 'ft2'] as const).map(unit => {
+                const active = areaInputUnit === unit;
+                return (
+                  <button
+                    key={unit}
+                    type="button"
+                    onClick={() => onAreaUnitInput(unit)}
+                    style={{
+                      border: 'none',
+                      borderRadius: '999px',
+                      padding: '0.28rem 0.7rem',
+                      background: active ? '#1a365d' : 'transparent',
+                      color: active ? '#fff' : '#4a5568',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      fontSize: '0.8rem',
+                    }}
+                  >
+                    {unit === 'm2' ? 'm²' : 'ft²'}
+                  </button>
+                );
+              })}
+            </div>
             <input
               type="number"
               value={availableArea}
               onChange={e => onAreaInput(e.target.value)}
-              placeholder="如 600"
+              placeholder={areaInputUnit === 'm2' ? '如 600' : '如 6460'}
               min={1}
               style={{
-                width: '100px', padding: '0.35rem 0.6rem', borderRadius: '6px',
+                width: getInputWidth(availableArea, 8), padding: '0.35rem 0.6rem', borderRadius: '6px',
                 border: '1px solid #cbd5e0', fontSize: '0.9rem',
               }}
             />
-            <span style={{ color: '#718096', fontSize: '0.85rem' }}>m²</span>
-            {areaNum > 0 && (
+            <span style={{ color: '#718096', fontSize: '0.85rem' }}>{areaInputUnit === 'm2' ? 'm²' : 'ft²'}</span>
+            {areaM2 > 0 && (
               <span style={{
                 background: '#ebf8ff', color: '#2b6cb0', borderRadius: '6px',
                 padding: '3px 10px', fontSize: '0.82rem', fontWeight: 600,
               }}>
                 最多可装 {maxSetsFromArea} 套支架
-                <span style={{ color: '#718096', fontWeight: 400 }}>（{AREA_PER_SET_M2} m²/套）</span>
+                <span style={{ color: '#718096', fontWeight: 400 }}>
+                  （每套约 {formatAreaDual(AREA_PER_SET_M2, 'zh').combined}）
+                </span>
               </span>
             )}
+            <div style={{ width: '100%', fontSize: '0.78rem', color: '#718096' }}>
+              当前按 {areaInputUnit === 'm2' ? 'm²' : 'ft²'} 输入，内部统一换算为 m²。
+            </div>
           </div>
         )}
       </div>
@@ -302,6 +359,7 @@ export default function StepOptimize({
   // ── 仅保留场地面积约束 ─────────────────────────────────
   const [hasAreaLimit,  setHasAreaLimit]  = useState(false);
   const [availableArea, setAvailableArea] = useState('');
+  const [areaInputUnit, setAreaInputUnit] = useState<AreaUnit>('m2');
 
   // ── 结果状态 ──────────────────────────────────────────
   const [loading,     setLoading]     = useState(false);
@@ -324,15 +382,14 @@ export default function StepOptimize({
       : undefined;                               // 新购 → 自动定容或固定容量
   const effectiveDieselIsNew = hasGenerator && dieselIsNew;
 
-  const runOptimize = useCallback(async (areaLimit: boolean, areaStr: string) => {
+  const runOptimize = useCallback(async (areaLimit: boolean, areaStr: string, areaUnit: AreaUnit) => {
     if (annualLoadKwh <= 0) return;
     setLoading(true);
     setError(null);
     setOptions([]);
     setSelectedIdx(null);
     try {
-      const areaM2 = areaLimit && parseFloat(areaStr) > 0
-        ? parseFloat(areaStr) : null;
+      const areaM2 = areaLimit ? parseAreaInputValue(areaStr, areaUnit) : null;
 
       const resp = await optimizeMicrogrid({
         annualLoadKwh,
@@ -369,22 +426,30 @@ export default function StepOptimize({
   }, [annualLoadKwh, dieselPriceUsd, effectiveDieselIsNew, existingDieselKw, panelModel, batteryPackModel]);
 
   useEffect(() => {
-    runOptimize(hasAreaLimit, availableArea);
+    runOptimize(hasAreaLimit, availableArea, areaInputUnit);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const scheduleRerun = useCallback((al: boolean, aa: string) => {
+  const scheduleRerun = useCallback((al: boolean, aa: string, unit: AreaUnit) => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => runOptimize(al, aa), 500);
+    debounceRef.current = setTimeout(() => runOptimize(al, aa, unit), 500);
   }, [runOptimize]);
 
   function handleAreaLimit(v: boolean) {
     setHasAreaLimit(v);
-    scheduleRerun(v, availableArea);
+    scheduleRerun(v, availableArea, areaInputUnit);
   }
   function handleAreaInput(v: string) {
     setAvailableArea(v);
-    scheduleRerun(hasAreaLimit, v);
+    scheduleRerun(hasAreaLimit, v, areaInputUnit);
+  }
+  function handleAreaUnitInput(nextUnit: AreaUnit) {
+    if (nextUnit === areaInputUnit) return;
+    const normalizedAreaM2 = parseAreaInputValue(availableArea, areaInputUnit);
+    const nextArea = normalizedAreaM2 ? formatAreaInputValue(normalizedAreaM2, nextUnit) : '';
+    setAreaInputUnit(nextUnit);
+    setAvailableArea(nextArea);
+    scheduleRerun(hasAreaLimit, nextArea, nextUnit);
   }
 
   function applyOption(opt: OptimizeOption) {
@@ -408,9 +473,12 @@ export default function StepOptimize({
 
   // 约束标签
   const constraintTags: string[] = [];
-  if (hasAreaLimit && parseFloat(availableArea) > 0) {
-    const mx = Math.max(1, Math.floor(parseFloat(availableArea) / AREA_PER_SET_M2));
-    constraintTags.push(`面积 ${availableArea} m² → 最多 ${mx} 套`);
+  const constrainedAreaM2 = hasAreaLimit ? parseAreaInputValue(availableArea, areaInputUnit) : null;
+  if (constrainedAreaM2) {
+    const mx = Math.max(1, Math.floor(constrainedAreaM2 / AREA_PER_SET_M2));
+    const areaDual = formatAreaDual(constrainedAreaM2, 'zh');
+    const alternateArea = areaInputUnit === 'm2' ? areaDual.secondary : areaDual.primary;
+    constraintTags.push(`面积 ${formatAreaSingle(constrainedAreaM2, areaInputUnit, 'zh')}（约 ${alternateArea}）→ 最多 ${mx} 套`);
   }
 
   return (
@@ -424,8 +492,10 @@ export default function StepOptimize({
         dieselIsNew={dieselIsNew}
         hasAreaLimit={hasAreaLimit}
         availableArea={availableArea}
+        areaInputUnit={areaInputUnit}
         onHasAreaLimit={handleAreaLimit}
         onAreaInput={handleAreaInput}
+        onAreaUnitInput={handleAreaUnitInput}
       />
 
       {/* 加载中 */}
@@ -448,7 +518,7 @@ export default function StepOptimize({
         }}>
           <strong>{error}</strong>
           <button
-            onClick={() => runOptimize(hasAreaLimit, availableArea)}
+            onClick={() => runOptimize(hasAreaLimit, availableArea, areaInputUnit)}
             style={{
               marginTop: '0.6rem', padding: '4px 14px', borderRadius: '6px',
               background: '#e53e3e', color: '#fff', border: 'none',

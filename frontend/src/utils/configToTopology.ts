@@ -5,6 +5,7 @@
 import type { ConfigData } from '@/types/index';
 import type { TopologyData } from '@/components/pages/MicrogridTopology';
 import { calcPvKw, getBracketByModel, getBatteryByModel } from '@/data/products';
+import { formatAreaDual } from '@/utils/unitFormat';
 
 export interface TopologyVisibility {
   pv: boolean;
@@ -156,7 +157,7 @@ export function configToTopologyData(config: ConfigData, lang: 'zh' | 'en' = 'en
         { name: tr('光伏容量', 'PV Capacity'), value: pvCapacityKw > 0 ? pvCapacityKw.toFixed(1) : '—', unit: pvCapacityKw > 0 ? 'kW' : '' },
         { name: tr('支架套数', 'Bracket Sets'), value: config.bracketSets > 0 ? config.bracketSets : '—', unit: config.bracketSets > 0 ? tr('套', 'sets') : '' },
         { name: tr('组件型号', 'Panel Model'), value: config.panelModel ?? '—', unit: '' },
-        { name: tr('预计占地面积', 'Estimated PV Area'), value: pvEstimatedArea > 0 ? pvEstimatedArea : '—', unit: pvEstimatedArea > 0 ? 'm²' : '' },
+        { name: tr('预计占地面积', 'Estimated PV Area'), value: formatAreaDual(pvEstimatedArea, lang).combined, unit: '' },
       ],
     };
 

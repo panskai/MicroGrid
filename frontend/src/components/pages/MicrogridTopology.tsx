@@ -9,6 +9,7 @@ import pvImg from '@/assets/images/PV.png';
 import loadImg from '@/assets/images/Load.png';
 import essImg from '@/assets/images/ESS.png';
 import dieselImg from '@/assets/images/Diesel.png';
+import { formatAreaDual } from '@/utils/unitFormat';
 import './MicrogridTopology.css';
 
 export interface TopologyMetric {
@@ -296,13 +297,13 @@ export default function MicrogridTopology({ className = '', data, visibility, va
         { label: lang === 'en' ? 'Max PV Capacity' : '最大光伏容量', value: d.pv.capacity.value, unit: d.pv.capacity.unit },
         { label: lang === 'en' ? 'Max Bracket Sets' : '最大支架套数', value: d.pv.sets?.value ?? '—', unit: d.pv.sets?.unit ?? '' },
         { label: lang === 'en' ? 'Panel Model' : '组件型号', value: d.pv.panelModel ?? '—', unit: '' },
-        { label: lang === 'en' ? 'Max Area' : '最大占地面积', value: (d.pv.areaM2 && d.pv.areaM2 > 0) ? d.pv.areaM2 : '—', unit: (d.pv.areaM2 && d.pv.areaM2 > 0) ? 'm²' : '' },
+        { label: lang === 'en' ? 'Max Area' : '最大占地面积', value: formatAreaDual(d.pv.areaM2, lang).combined, unit: '' },
       ]
     : [
         { label: lang === 'en' ? 'Max PV Capacity' : '最大光伏容量', value: d.pv.capacity.value, unit: d.pv.capacity.unit },
         ...(d.pv.sets ? [{ label: lang === 'en' ? 'Max Bracket Sets' : '最大支架套数', value: d.pv.sets.value, unit: d.pv.sets.unit }] : []),
         ...(d.pv.panelModel ? [{ label: lang === 'en' ? 'Panel Model' : '组件型号', value: d.pv.panelModel, unit: '' }] : []),
-        ...(d.pv.areaM2 ? [{ label: lang === 'en' ? 'Max Area' : '最大占地面积', value: d.pv.areaM2, unit: 'm²' }] : []),
+        ...(d.pv.areaM2 ? [{ label: lang === 'en' ? 'Max Area' : '最大占地面积', value: formatAreaDual(d.pv.areaM2, lang).combined, unit: '' }] : []),
       ];
 
   const loadTypeMap: Record<string, { zh: string; en: string }> = {

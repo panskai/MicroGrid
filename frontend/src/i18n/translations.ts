@@ -566,7 +566,7 @@ const dict: TranslationDict = {
   // ─────────────────────────────────────────────────────────
   'area.info_title':        { zh: '标准折叠支架占地参考：',        en: 'Standard Folding Bracket Reference:' },
   'area.quick_label':       { zh: '快速选择典型面积',              en: 'Quick-Select Typical Area' },
-  'area.input_label':       { zh: '输入可安装面积（m²）',          en: 'Enter Available Area (m²)' },
+  'area.input_label':       { zh: '输入可安装面积',               en: 'Enter Available Area' },
   'area.result_title':      { zh: '场地评估结果',                  en: 'Site Assessment Result' },
   'area.m2':                { zh: '可用面积（m²）',                en: 'Available Area (m²)' },
   'area.max_sets':          { zh: '最多可安装套数',                en: 'Max Installable Sets' },
@@ -595,7 +595,7 @@ const dict: TranslationDict = {
   // ─────────────────────────────────────────────────────────
   'diy.area.panel_label':   { zh: '选择光伏组件型号（容量）',       en: 'Select PV Module Model (Capacity)' },
   'diy.area.quick':         { zh: '快速选择典型面积',               en: 'Quick-Select Typical Area' },
-  'diy.area.manual':        { zh: '输入可用场地面积（m²）',         en: 'Enter Available Site Area (m²)' },
+  'diy.area.manual':        { zh: '输入可用场地面积',              en: 'Enter Available Site Area' },
   'diy.area.result':        { zh: '场地评估 & 光伏配置推算',        en: 'Site Assessment & PV Configuration' },
   'diy.area.m2':            { zh: '可用面积',                      en: 'Available Area' },
   'diy.area.max_sets':      { zh: '最多可安装',                    en: 'Max Installable' },
