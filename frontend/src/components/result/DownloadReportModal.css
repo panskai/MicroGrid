@@ -1,0 +1,256 @@
+/* DownloadReportModal.css */
+
+/* ── Overlay ─────────────────────────────────────────────── */
+.drm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 25, 50, 0.55);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: drm-fade-in 0.18s ease;
+}
+
+@keyframes drm-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Box ─────────────────────────────────────────────────── */
+.drm-box {
+  background: #fff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 540px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  animation: drm-slide-up 0.22s ease;
+}
+
+@keyframes drm-slide-up {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+.drm-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.4rem 1.5rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.drm-header-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.drm-icon {
+  width: 42px;
+  height: 42px;
+  background: #ebf8ff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.drm-icon svg {
+  width: 22px;
+  height: 22px;
+  color: #2b6cb0;
+}
+
+.drm-header-title h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a365d;
+  margin: 0 0 0.2rem;
+}
+
+.drm-header-title p {
+  font-size: 0.82rem;
+  color: #718096;
+  margin: 0;
+}
+
+.drm-close {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: #a0aec0;
+  cursor: pointer;
+  padding: 0.25rem 0.4rem;
+  border-radius: 6px;
+  line-height: 1;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+  margin-top: -2px;
+}
+.drm-close:hover { background: #f7fafc; color: #4a5568; }
+
+/* ── Form ────────────────────────────────────────────────── */
+.drm-form {
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.drm-desc {
+  font-size: 0.88rem;
+  color: #4a5568;
+  margin: 0 0 1.1rem;
+  line-height: 1.5;
+}
+
+.drm-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.drm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.32rem;
+  margin-bottom: 0.85rem;
+}
+
+.drm-field label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.drm-req {
+  color: #e53e3e;
+  font-weight: 700;
+}
+
+.drm-field input,
+.drm-field select {
+  padding: 0.5rem 0.7rem;
+  border: 1.5px solid #cbd5e0;
+  border-radius: 7px;
+  font-size: 0.9rem;
+  color: #2d3748;
+  background: #fff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.drm-field input:focus,
+.drm-field select:focus {
+  border-color: #2b6cb0;
+  box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.12);
+}
+
+/* ── Preview section ─────────────────────────────────────── */
+.drm-preview {
+  background: #f0fff4;
+  border: 1px solid #9ae6b4;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.1rem;
+}
+
+.drm-preview-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #276749;
+  margin-bottom: 0.4rem;
+}
+
+.drm-preview ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.82rem;
+  color: #22543d;
+  line-height: 1.7;
+}
+
+/* ── Actions ─────────────────────────────────────────────── */
+.drm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* ── Spinner ─────────────────────────────────────────────── */
+.drm-spin-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.drm-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: drm-spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes drm-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Done / Error state ──────────────────────────────────── */
+.drm-done {
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+
+.drm-done-check {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #c6f6d5;
+  color: #276749;
+  font-size: 1.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.drm-done-check.err {
+  background: #fed7d7;
+  color: #c53030;
+}
+
+.drm-done h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1a365d;
+  margin: 0 0 0.6rem;
+}
+
+.drm-done p {
+  font-size: 0.9rem;
+  color: #4a5568;
+  max-width: 380px;
+  margin: 0 auto 0.6rem;
+  line-height: 1.5;
+}
+
+.drm-email-note {
+  font-size: 0.83rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.drm-email-note.ok   { background: #f0fff4; color: #276749; border: 1px solid #9ae6b4; }
+.drm-email-note.warn { background: #fffaf0; color: #975a16; border: 1px solid #fbd38d; }

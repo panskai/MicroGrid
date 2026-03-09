@@ -1,0 +1,57 @@
+# ============================================================
+# docker-compose.yml — Microgrid Advisor
+# ============================================================
+# 用法:
+#   构建并启动:  docker compose up --build -d
+#   查看日志:    docker compose logs -f
+#   停止:        docker compose down
+#   访问前端:    http://localhost:8081
+#   访问后端API: http://localhost:6001/docs (直连)
+# ============================================================
+
+services:
+
+  # ── 后端：FastAPI + PyPSA ──────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: microgrid-backend
+    restart: unless-stopped
+    ports:
+      - "6001:6001"          # 可选：直连后端调试用
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=6001
+      - DEBUG=false
+      - CORS_ORIGINS=http://localhost:8081,http://127.0.0.1:8081
+    volumes:
+      # 挂载 products.yaml，方便修改后无需重建镜像
+      - ./backend/products.yaml:/backend/products.yaml:ro
+    networks:
+      - microgrid-net
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:6001/api/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  # ── 前端：Nginx 静态托管 + 反向代理 ───────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: microgrid-frontend
+    restart: unless-stopped
+    ports:
+      - "8081:80"            # 主访问入口
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - microgrid-net
+
+networks:
+  microgrid-net:
+    driver: bridge

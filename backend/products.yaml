@@ -1,0 +1,320 @@
+# ============================================================
+# products.yaml  —  微电网产品规格配置文件
+# ============================================================
+# 修改此文件即可更新所有模块的产品参数，无需改动任何 Python 代码。
+#
+# 字段说明：
+#   default_model  : 未指定型号时的默认选项
+#   models         : 各型号详细参数
+#
+# 价格单位全部为 USD（美元）
+# ============================================================
+
+
+# ────────────────────────────────────────────────────────────
+# 1. 光伏组件型号库
+#    price_usd_per_wp : 出厂含运价（$/Wp），由此派生 $/kW 价格
+# ────────────────────────────────────────────────────────────
+pv_panels:
+  default_model: "655W"
+  models:
+    "710W":
+      display_name:       "710Wp Ultra-High Eff. TOPCon N-type"
+      watts:              710           # 额定功率（Wp）
+      price_usd_per_wp:   0.36          # 含到港运输（$/Wp）
+      efficiency_pct:     22.8          # 组件效率（%）
+      length_mm:          2384
+      width_mm:           1134
+      temp_coeff_pct_per_c: -0.29       # N型温度系数更低
+      description: >
+        N型 TOPCon 超高效组件，双面发电，适合安装面积受限场景。
+        32块/套折叠支架 → 22.72 kW/套。
+
+    "655W":
+      display_name:       "655Wp High-Eff. Mono-Si PERC"
+      watts:              655           # 额定功率（Wp）
+      price_usd_per_wp:   0.32          # 含到港运输（$/Wp）
+      efficiency_pct:     21.3          # 组件效率（%）
+      length_mm:          2384
+      width_mm:           1096
+      temp_coeff_pct_per_c: -0.34       # 功率温度系数（%/°C）
+      description: >
+        单晶硅 PERC 高效组件，适合北美离网系统主力配置。
+        32块/套折叠支架 → 20.96 kW/套。
+
+    "600W":
+      display_name:       "600Wp Mono-Si Standard"
+      watts:              600
+      price_usd_per_wp:   0.30
+      efficiency_pct:     20.5
+      length_mm:          2278
+      width_mm:           1134
+      temp_coeff_pct_per_c: -0.34
+      description: >
+        单晶硅标准型，性价比优选。
+        32块/套折叠支架 → 19.20 kW/套。
+
+    "550W":
+      display_name:       "550Wp Mono-Si"
+      watts:              550
+      price_usd_per_wp:   0.29
+      efficiency_pct:     20.0
+      length_mm:          2187
+      width_mm:           1102
+      temp_coeff_pct_per_c: -0.35
+      description: >
+        32块/套折叠支架 → 17.60 kW/套。
+
+
+# ────────────────────────────────────────────────────────────
+# 2. 折叠支架规格库
+#    panels_per_set : 每套支架安装的组件数
+#    area_m2        : 展开占地面积（m²）
+# ────────────────────────────────────────────────────────────
+bracket_systems:
+  default_model: "standard_32"
+  models:
+    "standard_32":
+      display_name:    "Standard Folding Bracket (32 panels)"
+      panels_per_set:  32
+      area_m2:         260
+      description:     "标准型可折叠地面支架，适合平地安装，单套含基础预埋件。"
+
+    "large_48":
+      display_name:    "Large Folding Bracket (48 panels)"
+      panels_per_set:  48
+      area_m2:         390
+      description:     "大型折叠支架，适合大型商业/工业离网项目。"
+
+    "compact_24":
+      display_name:    "Compact Folding Bracket (24 panels)"
+      panels_per_set:  24
+      area_m2:         200
+      description:     "紧凑型，适合场地受限项目。"
+
+
+# ────────────────────────────────────────────────────────────
+# 3. 储能系统（电池包）
+#    price_usd      : 含 BMS 的单包出厂价
+# ────────────────────────────────────────────────────────────
+battery_packs:
+  default_model: "LFP-16kWh"
+  price_usd_per_kwh_fallback: 300.0   # 找不到具体型号时按此单价估算
+  models:
+    "LFP-16kWh":
+      display_name:   "LFP 16kWh Battery Pack (Standard)"
+      capacity_kwh:   16
+      price_usd:      3100             # 单包价格（$193.75/kWh）；Excel案例：16包×$3,100=$49,600 ✓
+      voltage_v:      51.2
+      cycle_life:     6000
+      depth_of_discharge_pct: 90
+      description: >
+        标准型单体柜式储能模块，含 BMS。
+        参考配比（Excel案例）：4套折叠支架（~84kW PV）× 3h × 1天 ÷ 16kWh = 16包（256kWh）→ 5年回本 ✓
+        估算公式：ceil(PV容量kW × 3 × storageDays ÷ 16)包。
+
+    "LFP-10kWh":
+      display_name:   "LFP 10kWh Battery Pack"
+      capacity_kwh:   10
+      price_usd:      2500             # 单包价格（$250/kWh）
+      voltage_v:      51.2
+      cycle_life:     4000
+      depth_of_discharge_pct: 90
+
+    "LFP-25kWh":
+      display_name:   "LFP 25kWh Battery Pack (High Capacity)"
+      capacity_kwh:   25
+      price_usd:      7250             # 单包价格（$290/kWh）
+      voltage_v:      51.2
+      cycle_life:     6000
+      depth_of_discharge_pct: 90
+
+    "LFP-20kWh":
+      display_name:   "LFP 20kWh Battery Pack"
+      capacity_kwh:   20
+      price_usd:      6000
+      voltage_v:      51.2
+      cycle_life:     4000
+      depth_of_discharge_pct: 90
+
+    "LFP-30kWh":
+      display_name:   "LFP 30kWh Battery Pack (Industrial)"
+      capacity_kwh:   30
+      price_usd:      8400             # 单包价格（$280/kWh）
+      voltage_v:      51.2
+      cycle_life:     6000
+      depth_of_discharge_pct: 90
+
+    "LFP-5kWh":
+      display_name:   "LFP 5kWh Battery Pack (Compact)"
+      capacity_kwh:   5
+      price_usd:      1600
+      voltage_v:      48.0
+      cycle_life:     3500
+      depth_of_discharge_pct: 90
+
+    "LFP-40kWh":
+      display_name:   "LFP 40kWh Battery Pack (Cabinet Large)"
+      capacity_kwh:   40
+      price_usd:      11200            # 单包价格（$280/kWh）
+      voltage_v:      51.2
+      cycle_life:     6000
+      depth_of_discharge_pct: 90
+
+
+# ────────────────────────────────────────────────────────────
+# 4. 储能逆变器规格
+#    voltage_levels : 适配的系统电压等级列表
+# ────────────────────────────────────────────────────────────
+inverters:
+  # packs_per_inverter : 每台逆变器管理的电池包数
+  # 标定依据（40kW参考案例）：16包 ÷ 6 = 3台，3×$7,500 = $22,500
+  # 储能总成本 = 逆变器 $22,500 + 电池包 $49,600 + 托盘 $4,000 = $76,100 ✓
+  models:
+    "INV-5000W-240V":
+      display_name:      "5kW Bidirectional Inverter (120V/240V Split-phase)"
+      power_kw:          5.0
+      price_usd:         7500
+      voltage_levels:    ["120V/240V"]
+      packs_per_inverter: 6       # 16包 ÷ 6 = ceil→3台 ✓（参考案例）
+      description:       "适用于北美住宅分裂相系统。"
+
+    "INV-7500W-208V":
+      display_name:      "7.5kW Three-phase Inverter (120V/208V)"
+      power_kw:          7.5
+      price_usd:         7500
+      voltage_levels:    ["120V/208V"]
+      packs_per_inverter: 6
+      description:       "适用于北美三相 Y 接商业系统。"
+
+    "INV-15000W-480V":
+      display_name:      "15kW Industrial Three-phase Inverter (277V/480V)"
+      power_kw:          15.0
+      price_usd:         15000
+      voltage_levels:    ["277V/480V"]
+      packs_per_inverter: 8       # 工业系统每台可管理更多包
+      description:       "适用于北美工业三相系统。"
+
+  # 电压等级 → 默认逆变器型号的快速映射
+  voltage_default_map:
+    "120V/240V": "INV-5000W-240V"
+    "120V/208V": "INV-7500W-208V"
+    "277V/480V": "INV-15000W-480V"
+
+
+# ────────────────────────────────────────────────────────────
+# 5. 柴油发电机规格
+#    price_usd_per_kw : 通用定价规则，找不到具体型号时使用
+# ────────────────────────────────────────────────────────────
+diesel_generators:
+  price_usd_per_kw: 1125.0            # 通用单价（$/kW）
+  models:
+    "DG-20kW":
+      display_name:  "20kW Diesel Generator Set"
+      power_kw:      20
+      price_usd:     22500
+      fuel_efficiency_kwh_per_liter: 3.5   # 满载效率
+
+    "DG-40kW":
+      display_name:  "40kW Diesel Generator Set"
+      power_kw:      40
+      price_usd:     45000
+      fuel_efficiency_kwh_per_liter: 3.5
+
+    "DG-60kW":
+      display_name:  "60kW Diesel Generator Set"
+      power_kw:      60
+      price_usd:     67500
+      fuel_efficiency_kwh_per_liter: 3.6
+
+    "DG-100kW":
+      display_name:  "100kW Diesel Generator Set"
+      power_kw:      100
+      price_usd:     112500
+      fuel_efficiency_kwh_per_liter: 3.8
+
+
+# ────────────────────────────────────────────────────────────
+# 6. 光储一体机规格（预封装产品）
+# ────────────────────────────────────────────────────────────
+integrated_pv_storage:
+  models:
+    "small":
+      display_name:  "Small Integrated PV-Storage Unit"
+      pv_kw:         5
+      battery_kwh:   10
+      battery_kw:    5
+      diesel_ratio:  0.5    # 推荐柴油机 = pv_kw × ratio
+
+    "medium":
+      display_name:  "Medium Integrated PV-Storage Unit"
+      pv_kw:         10
+      battery_kwh:   20
+      battery_kw:    10
+      diesel_ratio:  1.0
+
+    "large":
+      display_name:  "Large Integrated PV-Storage Unit"
+      pv_kw:         20
+      battery_kwh:   40
+      battery_kw:    20
+      diesel_ratio:  2.0
+
+
+# ────────────────────────────────────────────────────────────
+# 7. 附属成本
+#
+# 说明：部分成本随支架套数线性增长，部分为固定成本。
+# 以 40kW 参考案例（4 套折叠支架 + 16 包 16kWh 电池 = 256kWh）标定：
+#
+#   国际运输 = 3000 + 4×1950  = $10,800  ✓
+#   安装调试 = 1000 + 4×1000  =  $5,000  ✓
+#   附件材料 = 8500 + 4×5000  = $28,500  ✓
+#   其他初始 = $4,200（固定）  =  $4,200  ✓
+#   电池托盘 = 16包 × $250    =  $4,000  ✓
+#
+# 储能配比规则（与 Excel 案例对齐）：
+#   基准公式：ceil(PV容量kW × 3h × storageDays ÷ 16kWh/包)
+#     4套655W(83.84kW) × 3h × 1天 = 251kWh → 16包×16kWh（$49,600）✓
+#     4套655W(83.84kW) × 3h × 2天 = 503kWh → 32包×16kWh
+#     2套655W(41.92kW) × 3h × 1天 = 126kWh →  8包×16kWh
+#
+# 对于 2 套支架系统：
+#   国际运输 = 3000 + 2×1950  =  $6,900（-36%）
+#   安装调试 = 1000 + 2×1000  =  $3,000（-40%）
+#   附件材料 = 8500 + 2×5000  = $18,500（-35%）
+# ────────────────────────────────────────────────────────────
+accessories:
+
+  # ── 国际运输（固定 + 按支架套数缩放）──────────────────────
+  intl_transport:
+    base_usd:             3000.0   # 固定：海运基础费/清关/控制器国内零件
+    per_bracket_set_usd:  1950.0   # 变动：每套支架+组件海运增量
+
+  # ── 安装调试费（固定 + 按支架套数缩放）────────────────────
+  installation:
+    base_usd:             1000.0   # 固定：出差/动员/施工准备
+    per_bracket_set_usd:  1000.0   # 变动：每套支架安装人工
+
+  # ── 附件材料（固定 + 按支架套数缩放）──────────────────────
+  accessory_materials:
+    base_usd:             8500.0   # 固定：主配电箱/交流出线/接地材料
+    per_bracket_set_usd:  5000.0   # 变动：每套直流线缆/MC4连接器/辅材
+
+  # ── 其他初始成本（基本固定）────────────────────────────────
+  other_initial_usd:      4200.0   # 文档/许可证/首年耗材等（固定）
+
+  # ── 电池托盘（按电池包数量缩放）────────────────────────────
+  battery_pallet:
+    per_pack_usd:          250.0   # 每包电池托盘费（16包×$250=$4,000 ✓）
+    reference_pack_kwh:     10.0   # 参考单包容量（kWh），用于 kWh 换算
+
+
+# ────────────────────────────────────────────────────────────
+# 8. 定价策略
+# ────────────────────────────────────────────────────────────
+pricing:
+  profit_margin:      0.20          # 含税利润率（20%）
+  pass_through_items:               # 不计利润的直通成本项
+    - diesel_generator_cost
+    - installation_cost

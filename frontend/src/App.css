@@ -1,0 +1,159 @@
+.app {
+  height: 100vh;
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+/* ─── Top Header Bar ─────────────────────────────────── */
+.app-top-header {
+  background: #1a365d;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  flex-shrink: 0;
+}
+
+.top-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.top-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.top-header-logo { display: flex; align-items: center; }
+
+.top-header-logo-img {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+}
+
+.top-header-slogan {
+  color: rgba(255,255,255,0.9);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.top-header-right { display: flex; align-items: center; gap: 1rem; }
+
+.top-header-company {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  align-items: flex-end;
+}
+
+.top-header-company-name {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.top-header-company-subtitle {
+  color: rgba(255,255,255,0.75);
+  font-size: 0.75rem;
+}
+
+/* ─── Body: SideNav(left) + Main(right) ─────────────── */
+.app-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* SideNav 宽度兜底（组件内也设了） */
+.app-body > nav {
+  flex-shrink: 0;
+}
+
+/* 主内容区 */
+.app-main-content {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  background: #fff;
+  overflow-y: auto;
+}
+
+/* Wizard 流程：占满剩余空间，禁止整页滚动 */
+.app-main-content.app-main-flow {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app-main-scroll { overflow-y: auto; }
+
+.app-main-flow {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Step Indicator ─────────────────────────────────── */
+.step-indicator-container {
+  background: #fff;
+  /* padding: 1.25rem 2rem 0; */
+  border-bottom: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+/* ─── Wizard two-column layout ───────────────────────── */
+/* 占满屏幕剩余区域，内部各自可滚动 */
+.app-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem 2rem;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.layout-left {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  position: relative;
+  background: #f4f7fc;
+  background-image:
+    linear-gradient(rgba(76, 103, 153, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(76, 103, 153, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.layout-right {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+/* ─── Responsive ─────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .app-layout { flex-direction: column; }
+  .layout-left { order: 2; }
+  .layout-right { order: 1; }
+}
+
+@media (max-width: 768px) {
+  .app-body { flex-direction: column; }
+  .app-layout { gap: 1rem; padding: 1rem; }
+}

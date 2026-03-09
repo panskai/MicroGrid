@@ -1,0 +1,231 @@
+/* ═══════════════════════════════════════════════════════════
+   SideNav  —  Modern dark sidebar navigation
+═══════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+.sidenav {
+  width: 340px;
+  min-width: 340px;
+  flex-shrink: 0;
+  background: #0f172a;
+  border-right: none;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+}
+
+/* ── 顶部品牌区 ─────────────────────────────────────────── */
+.sidenav-brand {
+  padding: 1.8rem 1.8rem 1.4rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  flex-shrink: 0;
+}
+
+.sidenav-brand-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+}
+
+.sidenav-brand-sub {
+  font-size: 0.88rem;
+  color: #64748b;
+  margin-top: 0.3rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* ── 菜单内容区 ─────────────────────────────────────────── */
+.sidenav-menu {
+  flex: 1;
+  padding: 0.75rem 0;
+  overflow-y: auto;
+}
+
+/* ── 菜单分组 ───────────────────────────────────────────── */
+.sidenav-section {
+  margin-bottom: 0.25rem;
+}
+
+/* ── 一级菜单（分组标题按钮）──────────────────────────── */
+.sidenav-group-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 0.9rem 1.8rem;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.15s;
+  line-height: 1.4;
+  flex-shrink: 0;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sidenav-group-btn:hover {
+  color: #94a3b8;
+}
+
+.sidenav-group-btn.active .sidenav-group-label {
+  color: #94a3b8;
+}
+
+.sidenav-group-label {
+  flex: 1;
+}
+
+.sidenav-group-toggle {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #334155;
+  line-height: 1;
+  margin-left: 0.5rem;
+  flex-shrink: 0;
+  user-select: none;
+  transition: transform 0.2s, color 0.15s;
+}
+
+.sidenav-group-btn:hover .sidenav-group-toggle {
+  color: #64748b;
+}
+
+/* ── 子菜单 ─────────────────────────────────────────────── */
+.sidenav-children {
+  display: flex;
+  flex-direction: column;
+  padding: 0.15rem 0 0.6rem 0;
+  flex-shrink: 0;
+}
+
+.sidenav-child-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 0.75rem 1.8rem 0.75rem 2.2rem;
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: background 0.14s, color 0.14s;
+  line-height: 1.5;
+  flex-shrink: 0;
+  border-radius: 0;
+  position: relative;
+}
+
+/* 左侧竖条指示器 */
+.sidenav-child-btn::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20%;
+  height: 60%;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: transparent;
+  transition: background 0.15s;
+}
+
+.sidenav-child-btn:hover {
+  background: rgba(255,255,255,0.05);
+  color: #e2e8f0;
+}
+
+.sidenav-child-btn:hover::before {
+  background: #334155;
+}
+
+.sidenav-child-btn.active {
+  background: rgba(99, 179, 237, 0.1);
+  color: #63b3ed;
+  font-weight: 500;
+}
+
+.sidenav-child-btn.active::before {
+  background: #63b3ed;
+}
+
+/* ── 子菜单图标（圆点） ─────────────────────────────────── */
+.sidenav-child-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #334155;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.sidenav-child-btn:hover .sidenav-child-dot {
+  background: #64748b;
+}
+
+.sidenav-child-btn.active .sidenav-child-dot {
+  background: #63b3ed;
+  box-shadow: 0 0 6px rgba(99, 179, 237, 0.6);
+}
+
+/* ── 分隔线 ──────────────────────────────────────────────── */
+.sidenav-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+  margin: 0.25rem 1.8rem;
+  flex-shrink: 0;
+}
+
+/* ── 底部状态区 ──────────────────────────────────────────── */
+.sidenav-footer {
+  margin-top: auto;
+  flex-shrink: 0;
+  padding: 1.2rem 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  background: rgba(0,0,0,0.15);
+}
+
+.sidenav-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #334155;
+}
+
+.sidenav-status-dot.online  { background: #48bb78; box-shadow: 0 0 5px rgba(72,187,120,0.5); }
+.sidenav-status-dot.offline { background: #fc8181; box-shadow: 0 0 5px rgba(252,129,129,0.5); }
+.sidenav-status-dot.pending {
+  background: #f6ad55;
+  animation: pulse-dot 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+.sidenav-status-text {
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: #475569;
+  letter-spacing: 0.02em;
+}

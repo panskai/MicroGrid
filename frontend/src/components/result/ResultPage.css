@@ -1,0 +1,612 @@
+/* ── ResultPage 主框架 ── */
+.result-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* ── PyPSA 精算进度条动画 ── */
+@keyframes pypsa-progress {
+  0%   { width: 2%; }
+  60%  { width: 70%; }
+  90%  { width: 92%; }
+  100% { width: 98%; }
+}
+
+/* ── 加载/错误状态 ── */
+.result-loading,
+.result-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #bee3f8;
+  border-top-color: #3182ce;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error-icon { font-size: 3rem; }
+.error-msg  { color: #c53030; font-weight: 500; max-width: 600px; white-space: pre-wrap; }
+.error-trace { background: #fff5f5; border: 1px solid #fed7d7; padding: 1rem; border-radius: 6px; font-size: 0.78rem; text-align: left; max-width: 700px; overflow-x: auto; }
+.error-actions { display: flex; gap: 1rem; }
+
+/* ── 顶部标题 ── */
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.result-header h1 {
+  font-size: 1.75rem;
+  color: #1a365d;
+  margin-bottom: 0.3rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: #718096;
+  font-weight: 400;
+}
+
+.result-header-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.btn-sm { padding: 0.45rem 1rem; font-size: 0.85rem; }
+
+/* ── KPI 摘要卡 ── */
+.kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.kpi-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,.06);
+}
+
+.kpi-label {
+  font-size: 0.78rem;
+  color: #718096;
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+}
+
+.kpi-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.kpi-value.blue   { color: #3182ce; }
+.kpi-value.green  { color: #38a169; }
+.kpi-value.orange { color: #dd6b20; }
+
+/* ── 标签页 ── */
+.result-tabs {
+  display: flex;
+  gap: 0.25rem;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  padding: 0.6rem 1.2rem;
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #718096;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tab-btn:hover { color: #3182ce; }
+.tab-btn.active { color: #1a365d; border-bottom-color: #3182ce; font-weight: 700; }
+
+/* ── 标签内容容器 ── */
+.result-tab-content { min-height: 300px; }
+
+/* ── 通用卡片 ── */
+.result-card {
+  background: #ffffff;
+  color: #333;
+  padding: 1.75rem 2rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  border-top: 3px solid #3182ce;
+}
+
+.card-title {
+  font-size: 1.15rem;
+  margin-bottom: 1.2rem;
+  color: #1a365d;
+  font-weight: 700;
+}
+
+/* ── 产品示意图 tab ── */
+.result-schematic-wrap {
+  padding-bottom: 2rem;
+}
+
+/* 示意图高度由 SchematicTopology 组件控制 (580px) */
+.result-schematic-wrap .result-schematic-topology {
+  margin-top: 0.5rem;
+}
+
+.roi-display {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.roi-value {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #1a365d;
+}
+
+.roi-unit {
+  font-size: 1.5rem;
+  color: #666;
+  font-weight: 400;
+}
+
+.config-summary {
+  background: white;
+  padding: 2rem;
+  border: 1px solid #e0e0e0;
+}
+
+.config-summary h2 {
+  font-size: 1.5rem;
+  color: #1a365d;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #1a365d;
+  font-weight: 600;
+}
+
+.summary-item {
+  display: flex;
+  padding: 1rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.summary-item:last-child {
+  border-bottom: none;
+}
+
+.summary-item .label {
+  font-weight: 600;
+  color: #666;
+  min-width: 180px;
+}
+
+.summary-item .value {
+  color: #333;
+  flex: 1;
+}
+
+.roi-details {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.roi-detail-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detail-label {
+  font-size: 0.875rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-value {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a365d;
+}
+
+.summary-section {
+  margin-bottom: 2rem;
+}
+
+.summary-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-title {
+  font-size: 1.125rem;
+  color: #1a365d;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.highlight-cost {
+  color: #1a365d;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.highlight-savings {
+  color: #1a365d;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.highlight-roi {
+  color: #1a365d;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.company-info {
+  background: white;
+  padding: 2rem;
+  border: 1px solid #e0e0e0;
+  margin-top: 2rem;
+}
+
+.company-info h2 {
+  font-size: 1.5rem;
+  color: #1a365d;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #1a365d;
+  font-weight: 600;
+}
+
+.company-details {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.company-logo {
+  flex-shrink: 0;
+}
+
+.logo-placeholder {
+  width: 150px;
+  height: 150px;
+  background: #1a365d;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border: 1px solid #e0e0e0;
+}
+
+.contact-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-item {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.contact-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+  color: #666;
+}
+
+.contact-content {
+  flex: 1;
+}
+
+.contact-label {
+  font-size: 0.75rem;
+  color: #666;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.contact-value {
+  font-size: 0.9375rem;
+  color: #1a365d;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.contact-value a {
+  color: #1a365d;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.contact-value a:hover {
+  color: #2c5282;
+  text-decoration: underline;
+}
+
+.company-description {
+  padding: 1.5rem 0;
+  margin-top: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.company-description p {
+  color: #666;
+  line-height: 1.7;
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+.result-footer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.result-footer .btn {
+  padding: 0.75rem 2rem;
+  border: 1px solid;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.result-footer .btn-primary {
+  background-color: #1a365d;
+  color: white;
+  border-color: #1a365d;
+}
+
+.result-footer .btn-primary:hover {
+  background-color: #2c5282;
+  border-color: #2c5282;
+}
+
+.result-footer .btn-secondary {
+  background-color: white;
+  color: #1a365d;
+  border-color: #1a365d;
+}
+
+.result-footer .btn-secondary:hover {
+  background-color: #f7fafc;
+}
+
+.components-section {
+  background: white;
+  padding: 2rem;
+  border: 1px solid #e0e0e0;
+}
+
+.components-section h2 {
+  font-size: 1.5rem;
+  color: #1a365d;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.components-intro {
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.components-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .components-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  .result-footer {
+    display: none;
+  }
+  
+  .app-header {
+    display: none;
+  }
+  
+  .step-indicator {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .company-details {
+    flex-direction: column;
+  }
+  
+  .logo-placeholder {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+  
+  .roi-details {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .result-footer {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .result-page {
+    padding: 1rem;
+  }
+  .result-header h1 { font-size: 1.4rem; }
+  .kpi-strip { grid-template-columns: repeat(2, 1fr); }
+  .summary-item {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .summary-item .label { min-width: auto; }
+}
+
+/* ── summary-grid ── */
+.summary-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.sum-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #f0f4f8;
+  gap: 1rem;
+}
+
+.sum-row:last-child { border-bottom: none; }
+
+.sum-label {
+  color: #4a5568;
+  font-size: 0.9rem;
+  flex: 1;
+}
+
+.sum-value {
+  color: #2d3748;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-align: right;
+}
+
+.sum-value.highlight-blue  { color: #3182ce; }
+.sum-value.highlight-green { color: #38a169; }
+.sum-value.highlight-red   { color: #e53e3e; }
+
+/* ── Data Tables ── */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.data-table th {
+  background: #edf2f7;
+  color: #4a5568;
+  font-weight: 600;
+  padding: 0.65rem 0.9rem;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 2px solid #cbd5e0;
+  }
+
+.data-table td {
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid #f0f4f8;
+  color: #2d3748;
+}
+
+.data-table tbody tr:hover { background: #f7fafc; }
+
+.td-num { text-align: right; font-variant-numeric: tabular-nums; }
+.tr-subtotal td { background: #f7fafc; border-top: 1px solid #cbd5e0; }
+.tr-total td { background: #ebf8ff; border-top: 2px solid #3182ce; }
+.tr-highlight td { background: #f0fff4; font-weight: 600; }
+
+.pos { color: #38a169 !important; }
+.neg { color: #e53e3e !important; }
+
+/* ── Sim note ── */
+.sim-note {
+  background: #fffaf0;
+  border: 1px solid #fbd38d;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  color: #744210;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.sim-note p { margin: 0 0 0.5rem; }
+.sim-note p:last-child { margin: 0; }
+
+/* ── Contact grid ── */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.75rem;
+}
+
+.contact-row {
+  display: flex;
+  gap: 1rem;
+  padding: 0.6rem 0.75rem;
+  background: #f7fafc;
+  border-radius: 6px;
+  align-items: baseline;
+}
+
+.contact-label { font-weight: 600; color: #4a5568; min-width: 80px; font-size: 0.85rem; }
+.contact-value { color: #2d3748; font-size: 0.9rem; }
+

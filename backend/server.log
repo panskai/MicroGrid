@@ -1,0 +1,50 @@
+WARNING:  Current configuration will not reload as not all conditions are met, please refer to documentation.
+INFO:     Started server process [9436]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:6001 (Press CTRL+C to quit)
+Starting Microgrid Advisor API...
+  Docs: http://localhost:6001/docs
+INFO:     127.0.0.1:49670 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49673 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58709 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59945 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63371 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63373 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65025 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53651 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62874 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60811 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56287 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64694 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64696 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62997 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53940 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62455 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62457 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57591 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54844 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54846 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54848 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59084 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59088 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59086 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59090 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59092 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49697 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49699 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61174 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61172 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61178 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61176 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61180 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64310 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64313 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57287 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57289 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63610 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62974 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62972 - "GET /api/products HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62979 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55202 - "GET /api/solar-hours?lat=40.7&lon=-74 HTTP/1.1" 200 OK
+^C
